@@ -1,0 +1,285 @@
+{
+	"info": {
+		"_postman_id": "56c661d9-01c5-48c6-a216-261c347c6b3f",
+		"name": "JSON Placeholder autom",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29227222"
+	},
+	"item": [
+		{
+			"name": "GET comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"should verify response status code\", () => {\r",
+							"    \r",
+							"    //console.log(pm.response)\r",
+							"   // pm.response.to.have.status(200);\r",
+							"   pm.expect(pm.response.code).to.eql(200);\r",
+							"\r",
+							"// could be one of two\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,404]);\r",
+							"\r",
+							"   pm.expect(pm.response.code).to.be.a(\"number\");\r",
+							"})\r",
+							"// whether response time is lower than 100ms\r",
+							"pm.test(\"should verify response time\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.lessThan(100)\r",
+							"})\r",
+							"// whether response time is higher than 100ms\r",
+							"pm.test(\"should verify response time\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.greaterThan(100)\r",
+							"})\r",
+							"// whether status is \"OK\"\r",
+							"pm.test(\"should verify response status\", () => {\r",
+							"    pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"    //whether status type is string\r",
+							"    pm.expect(pm.response.status).to.be.a(\"string\");\r",
+							"})\r",
+							" // if first object from resposne has id=1\r",
+							" pm.test(\"should verify first post id\", () => {\r",
+							"    //first variable\r",
+							"    const responseBody = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseBody[0].id).to.eql(6);\r",
+							"})\r",
+							" // if object name has enough signs\r",
+							" pm.test(\"should verify lenght of name\", () => {\r",
+							"    //first variable\r",
+							"    const responseBody = pm.response.json();\r",
+							"   \r",
+							"    pm.expect(responseBody[2].name).to.have.lengthOf(14);\r",
+							"})\r",
+							"// if object email address has @\r",
+							" pm.test(\"should verify @ in email address\", () => {\r",
+							"    //first variable\r",
+							"    const responseBody = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseBody[0].email).to.include(\"@\");\r",
+							"})\r",
+							"// if every objects email address has @\r",
+							" pm.test(\"should verify @ in email address\", () => {\r",
+							"    //first variable\r",
+							"    const responseBody = pm.response.json();\r",
+							"    responseBody.map(anyObject => \r",
+							"    //{console.log(anyObject)})\r",
+							"    {\r",
+							"        pm.expect(anyObject.email).to.include(\"@\");\r",
+							"    })\r",
+							"\r",
+							"})\r",
+							" // verify of headers\r",
+							"    pm.test(\"should verify content type response\", () => {\r",
+							"        pm.response.to.have.header(\"Content-Type\")\r",
+							"    })\r",
+							"     // verify of headers content\r",
+							"    pm.test(\"should verify content type response\", () => {\r",
+							"        pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8\")\r",
+							"    })"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/comments?postId=2&postId=5&_limit=5",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"comments"
+					],
+					"query": [
+						{
+							"key": "postId",
+							"value": "2"
+						},
+						{
+							"key": "postId",
+							"value": "5"
+						},
+						{
+							"key": "_limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST tests",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// reading global variables\r",
+							"pm.test(\"Global\", () => {\r",
+							"//console.log(pm.globals.get(\"PostTitle\"))\r",
+							"// upload to variable\r",
+							"const place = pm.globals.get(\"PostTitle\");\r",
+							"// show variable\r",
+							"//console.log(\"From test: -> \" + place);\r",
+							"\r",
+							"// assert\r",
+							"const reqBody = pm.response.json();\r",
+							"pm.expect(reqBody.title).to.eql(place)\r",
+							"})\r",
+							"\r",
+							"//reading collec variable\r",
+							"pm.test(\"Collections variable\", () => {\r",
+							"    const tempVariable = pm.collectionVariables.get(\"baseURL\");\r",
+							"  //  console.log(\"Content coll variable: \" + tempVariable);\r",
+							"\r",
+							"})\r",
+							"\r",
+							"//env variable - remember to choose env first\r",
+							"pm.test(\"Env variable\", () => {\r",
+							"    const tempEnvVariable = pm.environment.get(\"UserName\");\r",
+							"   // console.log(tempEnvVariable);\r",
+							"})\r",
+							"\r",
+							"// how to set global variable - \"name\", \"value\"\r",
+							"pm.test(\"set global v\", () => {\r",
+							"    pm.globals.set(\"car\", \"Fiat\")\r",
+							"})\r",
+							"\r",
+							"//how to remove variable\r",
+							"pm.test(\"removing variable\", () => {\r",
+							"    pm.globals.unset(\"car\")\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": {{UserID}},\r\n    \"id\": 1625,\r\n    \"title\": \"{{PostTitle}}\",\r\n    \"body\": \"{{PostBody}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/posts",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// showing consol log\r",
+							"function showText () {\r",
+							"    console.log(\"Script before request\")\r",
+							"}\r",
+							"\r",
+							"showText(); // wywolanie funkcji\r",
+							"\r",
+							"//random email generator\r",
+							"function emailGenerator() {\r",
+							"// random numbers generator * (max - min) + min - match floor \r",
+							"const randomNumber =Math.floor(Math.random() * (10000000000 - 1) + 1);\r",
+							"console.log(\"test\" + randomNumber + \"@example.com\");\r",
+							"const randomVariableEmail = \"test\" + randomNumber + \"@example.com\";\r",
+							"// creating global variable for email address\r",
+							"pm.globals.set(\"Random email\", randomVariableEmail )\r",
+							"}\r",
+							"\r",
+							"emailGenerator();"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// showing consol log\r",
+							"function showTextW () {\r",
+							"    console.log(\"Script with request\")\r",
+							"}\r",
+							"\r",
+							"showTextW(); // wywolanie funkcji\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Leanne Graham\",\r\n    \"username\": \"{{UserName}}\",\r\n    \"email\": \"{{Random email}}\",\r\n    \"address\": {\r\n        \"street\": \"Kulas Light\",\r\n        \"suite\": \"Apt. 556\",\r\n        \"city\": \"Gwenborough\",\r\n        \"zipcode\": \"92998-3874\",\r\n        \"geo\": {\r\n            \"lat\": \"-37.3159\",\r\n            \"lng\": \"81.1496\"\r\n        }\r\n    },\r\n    \"phone\": \"1-770-736-8031 x56442\",\r\n    \"website\": \"hildegard.org\",\r\n    \"company\": {\r\n        \"name\": \"Romaguera-Crona\",\r\n        \"catchPhrase\": \"Multi-layered client-server neural-net\",\r\n        \"bs\": \"harness real-time e-markets\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/users/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://jsonplaceholder.typicode.com",
+			"type": "string"
+		}
+	]
+}
